@@ -18,8 +18,6 @@ class HomeBody extends StatelessWidget {
           SliderHorizontal(
             title: "Populares",
             data: moviesProvider.popularMovies,
-            heroId: "hero-populares-slider",
-            // onNextPage: () => moviesProvider.getOnPopularMovies()
           ),
           const SizedBox(height: 30),
         ],

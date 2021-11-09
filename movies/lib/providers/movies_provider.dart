@@ -20,7 +20,6 @@ class MoviesProvider extends ChangeNotifier {
   // LIST'S OF MOVIES
 
   List<Movie> nowPlayingMovies = [];
-  List<Movie> _popularMovies1  = [];
   List<Movie> popularMovies    = [];
 
   //-------------------------------------------------------------------------//
@@ -62,7 +61,7 @@ class MoviesProvider extends ChangeNotifier {
   Future<dynamic> _getJsonData({ required String endpoint, int page = 1 }) async {
     final url = Uri.http( _apiBaseUrl, endpoint, {
       "api_key"  : _apiKey,
-      "languaje" : _apiLanguage,
+      "language" : _apiLanguage,
       "page"     : "$page",
     });
 
@@ -89,20 +88,23 @@ class MoviesProvider extends ChangeNotifier {
 
   getPopularMovies() async {
     _pages++;
-    if ( _pages <= _pagesPopular ) {
-      final response = await _getJsonData( endpoint: _apiPopular, page: _pages );
 
-      final popularResponse = PopularResponse.fromJson( response );
+    if (_pages <= _pagesPopular) {
+      final response =
+          await _getJsonData(endpoint: _apiPopular, page: _pages);
+
+      final popularResponse = PopularResponse.fromJson(response);
 
       _pagesPopular = popularResponse.totalPages;
 
-      _popularMovies1 = [..._popularMovies1, ...popularResponse.results];
-
-      popularMovies = popularResponse.results;
+      popularMovies = [...popularMovies, ...popularResponse.results];
 
       notifyListeners();
 
-      return _popularMovies1;
+      return popularMovies;
+
+    } else {
+      _pages--;
     }
   }
 

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:card_swiper/card_swiper.dart';
-import 'package:movies/data/models/models.dart';
 import 'package:movies/resource/img.dart';
 import 'package:movies/routes/routes.dart';
 import 'package:movies/widgets/container_empty.dart';
 
 class CardSwiper extends StatelessWidget {
-  final List<Movie> data;
+  final List<dynamic> data;
 
   const CardSwiper({
     Key? key,
@@ -17,9 +16,9 @@ class CardSwiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    
     return data.isEmpty
-        ? const ContainerEmpty()
+        ? const Center(child: ContainerEmpty())
         : Container(
             width: double.infinity,
             height: size.height * 0.5,
@@ -27,18 +26,24 @@ class CardSwiper extends StatelessWidget {
             child: Swiper(
               itemCount: data.length,
               pagination:
-                  const SwiperPagination(builder: SwiperPagination.fraction),
-              layout: SwiperLayout.DEFAULT,
+                  const SwiperPagination(builder: SwiperPagination.dots),
+              layout: SwiperLayout.STACK,
+              autoplay: true,
               itemHeight: size.height * 0.5,
               itemWidth: size.width * 0.6,
               itemBuilder: (_, index) {
+                final d = data[index];
+
                 return GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, Routes.home,
-                      arguments: data[index]),
+                  onTap: () =>
+                      Navigator.pushNamed(context, Routes.home, arguments: d),
                   child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
                     child: FadeInImage(
+                      fadeInDuration: const Duration(milliseconds: 500),
+                      fit: BoxFit.cover,
                       placeholder: noImage,
-                      image: data[index].fullPosterImg,
+                      image: NetworkImage(d.fullPosterImg),
                     ),
                   ),
                 );
