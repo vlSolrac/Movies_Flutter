@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:movies/data/models/models.dart';
-import 'package:movies/data/response/credist_response.dart';
-import 'package:movies/data/response/response.dart';
 
-import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'package:movies/data/models/models.dart';
+import 'package:movies/data/response/response.dart';
 import 'package:movies/utils/debouncer.dart';
+import 'package:http/http.dart' as http;
 
 class MoviesProvider extends ChangeNotifier {
   //-------------------------------------------------------------------------//
@@ -17,7 +15,6 @@ class MoviesProvider extends ChangeNotifier {
   final _apiBaseUrl   = "api.themoviedb.org";
   final _apiNowPlayin = "3/movie/now_playing";
   final _apiPopular   = "3/movie/popular";
-  final _apiSeacrh    = "3/search/movie";
 
   //-------------------------------------------------------------------------//
   // LIST'S OF MOVIES
@@ -160,5 +157,8 @@ class MoviesProvider extends ChangeNotifier {
     Future.delayed( const Duration( milliseconds: 301 ) )
         .then( ( value ) => timer.cancel() );
   }
+
+  //-------------------------------------------------------------------------//
+  //
 
 }
