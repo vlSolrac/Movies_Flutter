@@ -7,11 +7,13 @@ import 'package:movies/routes/routes.dart';
 class SliderHorizontal extends StatelessWidget {
   final List<Movie> data;
   final String title;
+  final Future<dynamic> moviesProvider;
 
   const SliderHorizontal({
     Key? key,
     required this.title,
     required this.data,
+    required this.moviesProvider,
   }) : super(key: key);
 
   @override
@@ -32,11 +34,12 @@ class SliderHorizontal extends StatelessWidget {
                 child: Text(title, style: text),
               ),
               GestureDetector(
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.viewMore, arguments: {
-                  "title": title,
-                  "data": data,
-                }),
+                onTap: () => Navigator.pushNamed(context, Routes.viewMore,
+                    arguments: {
+                      "title": title,
+                      "data": data,
+                      "moviesProvider": moviesProvider
+                    }),
                 child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Text(vieMore, style: text),
@@ -60,7 +63,7 @@ class SliderHorizontal extends StatelessWidget {
 }
 
 class _PosterSlider extends StatelessWidget {
-  final Movie data; 
+  final Movie data;
   const _PosterSlider({
     Key? key,
     required this.data,
@@ -81,7 +84,7 @@ class _PosterSlider extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
-                height:  size.height * 0.25,
+                height: size.height * 0.25,
                 fit: BoxFit.cover,
                 placeholder: noImage,
                 image: NetworkImage(data.fullPosterImg),

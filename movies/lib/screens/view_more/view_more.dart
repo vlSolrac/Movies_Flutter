@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movies/providers/providers.dart';
 import 'package:movies/widgets/slider_vertical.dart';
 
 class ViewMorePage extends StatefulWidget {
@@ -14,7 +13,6 @@ class ViewMorePage extends StatefulWidget {
 class _ViewMorePageState extends State<ViewMorePage> {
   @override
   Widget build(BuildContext context) {
-    final moviesProvider = Provider.of<MoviesProvider>(context);
     final Map<String, dynamic> data =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -24,10 +22,10 @@ class _ViewMorePageState extends State<ViewMorePage> {
         title: Text(data["title"]),
       ),
       body: SliderVertical(
-        data: moviesProvider.popularMovies,
+        data: data["data"],
         onNextPage: () {
           setState(() {
-            moviesProvider.getPopularMovies();
+            data["moviesProvider"];
           });
         },
       ),

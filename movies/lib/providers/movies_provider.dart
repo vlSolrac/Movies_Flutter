@@ -15,12 +15,17 @@ class MoviesProvider extends ChangeNotifier {
   final _apiBaseUrl   = "api.themoviedb.org";
   final _apiNowPlayin = "3/movie/now_playing";
   final _apiPopular   = "3/movie/popular";
+  final _apiUpcoming  = "3/movie/upcoming";
+  final _apiTopRated  = "3/movie/top_rated";
 
   //-------------------------------------------------------------------------//
   // LIST'S OF MOVIES
 
   List<Movie> nowPlayingMovies = [];
   List<Movie> popularMovies    = [];
+  List<Movie> upcomingMovies   = [];
+  List<Movie> topRatedMovies   = [];
+  List<Movie> latestMovies     = [];
 
   //-------------------------------------------------------------------------//
   // MAP'S OF MOVIES AND CAST
@@ -31,8 +36,13 @@ class MoviesProvider extends ChangeNotifier {
   //-------------------------------------------------------------------------//
   // PAGES
 
-  int _pages        = 0;
-  int _pagesPopular = 1;
+  int _pagesP        = 0;
+  int _pagesPopular  = 1;
+  int _pagesU        = 0;
+  int _pagesUpcoming = 1;
+  int _pagesR         = 0;
+  int _pagesRated    = 1;
+
 
   //-------------------------------------------------------------------------//
   // DEBOUNCER
@@ -52,6 +62,8 @@ class MoviesProvider extends ChangeNotifier {
   MoviesProvider() {
     getNowPlayingMovies();
     getPopularMovies();
+    getTopRatedMovies();
+    getUpcomingMovies();
 
   }
 
@@ -87,13 +99,13 @@ class MoviesProvider extends ChangeNotifier {
   // GET POPULAR MOVIES: FUNCTION TO GET INFO FROM SERVICE ABOUT POPULAR MOVIES
 
   getPopularMovies() async {
-    _pages++;
+    _pagesP++;
 
-    if (_pages <= _pagesPopular) {
+    if (_pagesP <= _pagesPopular) {
       final response =
-          await _getJsonData(endpoint: _apiPopular, page: _pages);
+          await _getJsonData( endpoint: _apiPopular, page: _pagesP );
 
-      final popularResponse = PopularResponse.fromJson(response);
+      final popularResponse = PopularResponse.fromJson( response );
 
       _pagesPopular = popularResponse.totalPages;
 
@@ -104,7 +116,55 @@ class MoviesProvider extends ChangeNotifier {
       return popularMovies;
 
     } else {
-      _pages--;
+      _pagesP--;
+    }
+  }
+
+  //-------------------------------------------------------------------------//
+  // GET UPCOMING MOVIES: FUNCTION TO GET INFO FROM SERVICE ABOUT UPCOMING MOVIES
+
+  getUpcomingMovies() async {
+    _pagesU ++;
+    
+    if ( _pagesU <= _pagesUpcoming ) {
+      final response = await _getJsonData( endpoint: _apiUpcoming, page: _pagesU );
+
+      final upcomingReponse = UpcomingResponse.fromJson( response );
+
+      _pagesUpcoming = upcomingReponse.totalPages;
+
+      upcomingMovies = [ ...upcomingMovies, ...upcomingReponse.results ];
+
+      notifyListeners();
+
+      return upcomingMovies;
+
+    } else {
+      _pagesU --;
+    }
+  }
+
+  //-------------------------------------------------------------------------//
+  // GET TOP RATED MOVIES: FUNCTION TO GET INFO FROM SERVICE ABOUT TOP RATED MOVIES
+
+  getTopRatedMovies() async {
+    _pagesR ++;
+    
+    if ( _pagesR <= _pagesRated ) {
+      final response = await _getJsonData( endpoint: _apiTopRated, page: _pagesR );
+
+      final topRatedReponse = TopRatedResponse.fromJson( response );
+
+      _pagesRated = topRatedReponse.totalPages;
+
+      topRatedMovies = [ ...topRatedMovies, ...topRatedReponse.results ];
+
+      notifyListeners();
+
+      return topRatedMovies;
+
+    } else {
+      _pagesR --;
     }
   }
 
