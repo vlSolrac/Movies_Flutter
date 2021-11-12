@@ -16,7 +16,6 @@ class CustomAppBar extends StatelessWidget {
       expandedHeight: 220.0,
       floating: false,
       pinned: true,
-      leadingWidth: 1,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         titlePadding: const EdgeInsets.all(0),
@@ -28,10 +27,9 @@ class CustomAppBar extends StatelessWidget {
           child: Text(data.title, textAlign: TextAlign.center),
         ),
         background: FadeInImage(
-          placeholder: noImage,
-          image: NetworkImage(data.fullBackdropImg),
-        fit: BoxFit.cover
-        ),
+            placeholder: noImage,
+            image: NetworkImage(data.fullBackdropImg),
+            fit: BoxFit.cover),
       ),
     );
   }
