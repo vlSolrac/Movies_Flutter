@@ -40,7 +40,7 @@ class MoviesProvider extends ChangeNotifier {
   int _pagesPopular  = 1;
   int _pagesU        = 0;
   int _pagesUpcoming = 1;
-  int _pagesR         = 0;
+  int _pagesR        = 0;
   int _pagesRated    = 1;
 
 
